@@ -437,6 +437,3 @@ ledge_Side = "Right"
 
 [node name="Ledge2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 475, 770 )
-
-[node name="Ledge3" parent="." instance=ExtResource( 5 )]
-position = Vector2( 698, 602 )

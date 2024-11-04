@@ -71,6 +71,14 @@ func get_transition(delta):
 				
 		states.JUMP_SQUAT:
 			if parent.frame == parent.jump_squat:
+				if Input.is_action_pressed("shield_%s" % id) and (Input.is_action_pressed("left_%s" % id) or Input.is_action_pressed("right_%s" % id)): #basic wavedash
+					if Input.is_action_pressed("right_%s" % id):
+						parent.velocity.x = parent.air_dodge_speed/parent.perfect_wavedash_modifier
+					if Input.is_action_pressed("left_%s" % id):
+						parent.velocity.x = -parent.air_dodge_speed/parent.perfect_wavedash_modifier
+					parent.lag_frames = 6
+					parent.frame()
+					return states.LANDING
 				if not Input.is_action_pressed("jump_%s" % id):
 					parent.velocity.x = lerp(parent.velocity.x, 0, 0.08)
 					parent.frame()
@@ -250,6 +258,7 @@ func get_transition(delta):
 		states.AIR:
 			AIRMOVEMENT()
 			# double jumps
+			# maybe switch to is_action_pressed allow held jump to continue applying force
 			if Input.is_action_just_pressed("jump_%s" % id) and parent.airJump > 0:
 				parent.fastfall = false
 				parent.velocity.x = 0
@@ -278,7 +287,7 @@ func get_transition(delta):
 					parent.lag_frames = 0
 					parent.frame()
 					parent.reset_Jumps()
-					return state.CROUCH
+					return states.CROUCH
 				else:
 					parent.lag_frames = 0
 					parent.frame()
@@ -571,7 +580,7 @@ func Ledge():
 				parent.velocity.x = 0
 				parent.velocity.y = 0
 				self.parent.position.x = collider.position.x - 20
-				self.parent.position.y = collider.position.y - 2
+				self.parent.position.y = collider.position.y + 20
 				parent.turn(false)
 				parent.reset_Jumps()
 				parent.fastfall = false
@@ -587,7 +596,7 @@ func Ledge():
 				parent.velocity.x = 0
 				parent.velocity.y = 0
 				self.parent.position.x = collider.position.x + 20
-				self.parent.position.y = collider.position.y + 1
+				self.parent.position.y = collider.position.y + 20
 				parent.turn(true)
 				parent.reset_Jumps()
 				parent.fastfall = false
@@ -605,7 +614,7 @@ func Ledge():
 				parent.velocity.x = 0
 				parent.velocity.y = 0
 				self.parent.position.x = collider.position.x - 20
-				self.parent.position.y = collider.position.y - 1
+				self.parent.position.y = collider.position.y - 20
 				parent.turn(true)
 				parent.reset_Jumps()
 				parent.fastfall = false
@@ -621,7 +630,7 @@ func Ledge():
 				parent.velocity.x = 0
 				parent.velocity.y = 0
 				self.parent.position.x = collider.position.x + 20
-				self.parent.position.y = collider.position.y + 1
+				self.parent.position.y = collider.position.y + 20
 				parent.turn(true)
 				parent.reset_Jumps()
 				parent.fastfall = false

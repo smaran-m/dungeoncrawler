@@ -8,11 +8,12 @@ var velocity = Vector2(0,0)
 var dash_duration = 10
 
 #Landing Variables
-var landing_frames = 10
+var landing_frames = 0
 var lag_frames = 0
+var jump_squat = 3
+var perfect_wavedash_modifier = 1
 
 #Air Variables
-var jump_squat = 6 #6 frame jump
 var fastfall = false
 var airJump = 0
 export var airJumpMax = 1
