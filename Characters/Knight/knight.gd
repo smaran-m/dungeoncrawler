@@ -1,8 +1,27 @@
 extends KinematicBody2D
 
+#Global Variables
+var frame = 0
+
+#Ground Variables
 var velocity = Vector2(0,0)
 var dash_duration = 10
 
+#Air Variables
+var landing_frames = 10
+var lag_frames = 0
+var jump_squat = 6
+var fastfall = false
+
+#Onready variables
+onready var GroundL = get_node("Raycasts/GroundL")
+onready var GroundR = get_node("Raycasts/GroundR")
+onready var Ledge_Grab_F = get_node("Raycasts/Ledge_Grab_F")
+onready var Ledge_Grab_B = get_node("Raycasts/Ledge_Grab_B")
+onready var states = $State
+onready var anim = $Sprite/AnimationPlayer
+
+#Knight's main attributes
 var RUNSPEED = 340
 var DASHSPEED = 390
 var WALKSPEED = 200
@@ -20,9 +39,8 @@ var ROLL_DISTANCE = 350
 var air_dodge_speed = 500
 var UP_B_LAUNCHSPEED = 700
 
-onready var states = $State
 
-var frame = 0
+
 func updateframes(delta):
 	frame += 1
 
@@ -33,11 +51,23 @@ func turn(direction):
 	else:
 		dir = 1
 	$Sprite.set_flip_h(direction)
+	Ledge_Grab_F.set_cast_to(Vector2(dir*abs(Ledge_Grab_F.get_cast_to().x), Ledge_Grab_F.get_cast_to().y))
+	Ledge_Grab_F.position.x = dir * abs(Ledge_Grab_F.position.x)
+	Ledge_Grab_B.position.x = dir * abs(Ledge_Grab_B.position.x)
+	Ledge_Grab_B.set_cast_to(Vector2(-dir*abs(Ledge_Grab_F.get_cast_to().x), Ledge_Grab_F.get_cast_to().y))
+	
+	
+func direction():
+	if Ledge_Grab_F.get_cast_to().x > 0:
+		return 1
+	else:
+		return -1
 
 func frame():
 	frame = 0
 
-
+func play_animation(animation_name):
+	anim.play(animation_name)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
