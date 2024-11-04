@@ -173,7 +173,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=69]
-length = 0.48
+length = 0.4
 loop = true
 step = 0.0166667
 tracks/0/type = "value"
@@ -195,7 +195,7 @@ tracks/1/loop_wrap = false
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0 ]
@@ -758,7 +758,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=90]
-length = 0.4
+length = 0.1
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
@@ -779,7 +779,7 @@ tracks/1/loop_wrap = false
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.0166667, 0.05, 0.0833333 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 32.0, 33.0, 34.0, 35.0 ]
@@ -815,6 +815,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=92]
 length = 0.3
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -834,7 +835,7 @@ tracks/1/loop_wrap = false
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.0666667, 0.133333 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 40.0, 41.0, 42.0 ]

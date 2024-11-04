@@ -162,11 +162,11 @@ func get_transition(delta):
 			if Input.is_action_just_pressed("jump_%s" % id):
 				parent.frame()
 				return states.JUMP_SQUAT
-			elif Input.is_action_pressed("left_%s" % id)  && parent.direction() == 1:
+			elif Input.is_action_pressed("left_%s" % id) && parent.direction() == 1:
 				if parent.velocity.x > 0:
 					parent.frame()
 				parent.velocity.x += -parent.AIR_ACCEL * Input.get_action_strength("left_%s" % id)
-				parent.velocity.x = clamp(parent.velocity.x, -parent.DASHSPEED*1.4, parent.velocity.x)
+				parent.velocity.x = clamp(parent.velocity.x, -parent.DASHSPEED, parent.velocity.x)
 				if parent.frame <= parent.dash_duration * 2:
 					parent.turn(false)
 					return states.MOONWALK
@@ -174,11 +174,11 @@ func get_transition(delta):
 					parent.turn(true)
 					parent.frame()
 					return states.STAND
-			elif Input.is_action_pressed("right_%s" % id)  && parent.direction() == -1:
-				if parent.velocity.x > 0:
+			elif Input.is_action_pressed("right_%s" % id) && parent.direction() == -1:
+				if parent.velocity.x < 0:
 					parent.frame()
 				parent.velocity.x += parent.AIR_ACCEL * Input.get_action_strength("right_%s" % id)
-				parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, parent.DASHSPEED*1.5) #why 1.5?
+				parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, parent.DASHSPEED)
 				if parent.frame <= parent.dash_duration * 2:
 					parent.turn(true)
 					return states.MOONWALK
@@ -276,7 +276,7 @@ func enter_state(new_state, old_state):
 			parent.play_animation('turn')
 			parent.states.text = 'TURN'
 		states.CROUCH:
-			parent.play_animation('crouch')
+			parent.play_animation('crouchidle')
 			parent.states.text = 'CROUCH'
 		states.RUN:
 			parent.play_animation('dash')
