@@ -7,11 +7,20 @@ var frame = 0
 var velocity = Vector2(0,0)
 var dash_duration = 10
 
-#Air Variables
+#Landing Variables
 var landing_frames = 10
 var lag_frames = 0
-var jump_squat = 6
+
+#Air Variables
+var jump_squat = 6 #6 frame jump
 var fastfall = false
+var airJump = 0
+export var airJumpMax = 1
+
+#Ledges
+var last_ledge = false
+var regrab = 30
+var catch = false
 
 #Onready variables
 onready var GroundL = get_node("Raycasts/GroundL")
@@ -68,6 +77,12 @@ func frame():
 
 func play_animation(animation_name):
 	anim.play(animation_name)
+
+func reset_Jumps():
+	airJump = airJumpMax
+
+func reset_ledge():
+	last_ledge = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

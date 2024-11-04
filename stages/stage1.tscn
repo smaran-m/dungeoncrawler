@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://stages/dungeon/1.png" type="Texture" id=1]
 [ext_resource path="res://Characters/Knight/knight.tscn" type="PackedScene" id=2]
 [ext_resource path="res://stages/dungeon/background.png" type="Texture" id=3]
 [ext_resource path="res://stages/dungeon/greybrickrooms.png" type="Texture" id=4]
+[ext_resource path="res://stages/stage assets/Ledge.tscn" type="PackedScene" id=5]
 
 [sub_resource type="TileSet" id=2]
 0/name = "greybrickrooms.png 0"
@@ -429,3 +430,13 @@ editor_draw_drag_margin = true
 
 [node name="Knight" parent="." instance=ExtResource( 2 )]
 position = Vector2( 600, 715 )
+
+[node name="Ledge" parent="." instance=ExtResource( 5 )]
+position = Vector2( 1440, 770 )
+ledge_Side = "Right"
+
+[node name="Ledge2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 475, 770 )
+
+[node name="Ledge3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 698, 602 )
