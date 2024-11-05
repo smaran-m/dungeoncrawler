@@ -24,6 +24,7 @@ func _ready():
 	add_state('DOWN_TILT')
 	add_state('FORWARD_TILT')
 	add_state('JAB')
+	add_state('JAB2')
 	call_deferred("set_state", states.STAND)
 
 func state_logic(delta):
@@ -80,11 +81,12 @@ func get_transition(delta):
 
 		states.JUMP_SQUAT:
 			if parent.frame == parent.jump_squat:
-				if Input.is_action_pressed("shield_%s" % id) and (Input.is_action_pressed("left_%s" % id) or Input.is_action_pressed("right_%s" % id)): #basic wavedash
+				if Input.is_action_pressed("shield_%s" % id) and Input.is_action_pressed("left_%s" % id) or Input.is_action_pressed("right_%s" % id): #basic wavedash
 					if Input.is_action_pressed("right_%s" % id):
 						parent.velocity.x = parent.air_dodge_speed/parent.perfect_wavedash_modifier
 					if Input.is_action_pressed("left_%s" % id):
 						parent.velocity.x = -parent.air_dodge_speed/parent.perfect_wavedash_modifier
+					#parent.states.text = 'WAVEDASH'
 					parent.lag_frames = 6
 					parent.frame()
 					return states.LANDING
@@ -121,7 +123,7 @@ func get_transition(delta):
 						parent.frame()
 						return states.MOONWALK
 					parent.turn(true)
-					return states.DASH #redundant
+					return states.DASH
 				else:
 					parent.turn(true)
 					parent.frame()
@@ -289,7 +291,7 @@ func get_transition(delta):
 					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
 				elif parent.velocity.x < 0:
 					parent.velocity.x = parent.velocity.x + parent.TRACTION/2
-					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
+					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
 				if Input.is_action_just_pressed("jump_%s" % id):
 					parent.frame()
 					return states.JUMP_SQUAT
@@ -550,6 +552,28 @@ func get_transition(delta):
 					parent.velocity.x += parent.TRACTION * 3
 					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
 			if parent.JAB() == true:
+				if Input.is_action_pressed("attack_%s" % id):
+					parent.frame()
+					return states.JAB2
+				if Input.is_action_pressed("down_%s" % id):
+					parent.frame()
+					return states.CROUCH
+				else:
+					parent.frame()
+					return states.STAND
+
+		states.JAB2:
+			if parent.frame == 0:
+				parent.JAB2() #returns true if complete
+				pass
+			if parent.frame >= 1:
+				if parent.velocity.x > 0:
+					parent.velocity.x += -parent.TRACTION * 3
+					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
+				elif parent.velocity.x < 0:
+					parent.velocity.x += parent.TRACTION * 3
+					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
+			if parent.JAB2() == true:
 				if Input.is_action_pressed("down_%s" % id):
 					parent.frame()
 					return states.CROUCH
@@ -619,8 +643,11 @@ func enter_state(new_state, old_state):
 			parent.play_animation('ftilt')
 			parent.states.text = 'FORWARD_TILT'
 		states.JAB:
+			parent.play_animation('jab1')
+			parent.states.text = 'JAB1'
+		states.JAB2:
 			parent.play_animation('jab2')
-			parent.states.text = 'JAB'
+			parent.states.text = 'JAB2'
 
 
 func exit_state(old_state, new_state):
@@ -688,12 +715,12 @@ func Landing():
 			return true
 
 func Falling():
-	if state_includes([states.STAND, states.DASH, states.MOONWALK, states.RUN, states.CROUCH, states.WALK]):
+	if state_includes([states.STAND, states.DASH, states.MOONWALK, states.RUN, states.CROUCH, states.WALK, states.LANDING]):
 		if not parent.GroundL.is_colliding() and not parent.GroundR.is_colliding():
 			return true
 
 func Ledge():
-	if state_includes([states.AIR]):
+	if state_includes([states.AIR, states.LANDING]):
 		if (parent.Ledge_Grab_F.is_colliding()):
 			var collider = parent.Ledge_Grab_F.get_collider()
 

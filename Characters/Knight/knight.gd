@@ -125,7 +125,13 @@ func UP_TILT():
 		return true
 
 func JAB():
-	if frame == 8:
+	if frame == 12:
 		create_hitbox(29, 29, 8, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
-	if frame >= 16: #when exitable
+	if frame >= 24: #when exitable
+		return true
+
+func JAB2():
+	if frame == 1:
+		create_hitbox(29, 29, 8, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+	if frame >= 11: #when exitable
 		return true

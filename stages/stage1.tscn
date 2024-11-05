@@ -434,7 +434,7 @@ collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wall"]
 position = Vector2( -955, -435 )
-polygon = PoolVector2Array( 479, 790, 1441, 790, 1384, 845, 1302, 883, 621, 886, 535, 845 )
+polygon = PoolVector2Array( 479, 790, 1439, 790, 1384, 845, 1302, 883, 621, 886, 535, 845 )
 
 [node name="Label" type="Label" parent="wall"]
 margin_left = -20.0
