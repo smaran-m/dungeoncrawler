@@ -5,12 +5,12 @@ var frame = 0
 
 #Ground Variables
 var velocity = Vector2(0,0)
-var dash_duration = 10
+var dash_duration = 8
 
 #Landing Variables
-var landing_frames = 0
-var lag_frames = 0
-var jump_squat = 3
+var landing_frames = 10
+var lag_frames = 6
+var jump_squat = 6
 var perfect_wavedash_modifier = 1
 
 #Air Variables
@@ -22,6 +22,10 @@ export var airJumpMax = 1
 var last_ledge = false
 var regrab = 30
 var catch = false
+
+#Hitboxes
+export var hitbox: PackedScene
+var selfState
 
 #Onready variables
 onready var GroundL = get_node("Raycasts/GroundL")
@@ -49,7 +53,15 @@ var ROLL_DISTANCE = 350
 var air_dodge_speed = 500
 var UP_B_LAUNCHSPEED = 700
 
-
+func create_hitbox(width, height, damage, angle, base_kb, kb_scaling, duration, type, points, angle_flipper, hitlag = 1):
+	var hitbox_instance = hitbox.instance()
+	self.add_child(hitbox_instance)
+	if direction() == 1:
+		hitbox_instance.set_parameters(width, height, damage, angle, base_kb, kb_scaling, duration, type, points, angle_flipper, hitlag)
+	else:
+		var flip_x_points = Vector2(-points.x, points.y)
+		hitbox_instance.set_parameters(width, height, damage, -angle + 180, base_kb, kb_scaling, duration, type, flip_x_points, angle_flipper, hitlag)
+	return hitbox_instance
 
 func updateframes(delta):
 	frame += 1
@@ -63,7 +75,7 @@ func turn(direction):
 	$Sprite.set_flip_h(direction)
 	Ledge_Grab_F.set_cast_to(Vector2(dir*abs(Ledge_Grab_F.get_cast_to().x), Ledge_Grab_F.get_cast_to().y))
 	Ledge_Grab_F.position.x = dir * abs(Ledge_Grab_F.position.x)
-	Ledge_Grab_B.position.x = dir * abs(Ledge_Grab_B.position.x)
+	Ledge_Grab_B.position.x = -dir * abs(Ledge_Grab_B.position.x)
 	Ledge_Grab_B.set_cast_to(Vector2(-dir*abs(Ledge_Grab_F.get_cast_to().x), Ledge_Grab_F.get_cast_to().y))
 	
 	
@@ -91,4 +103,29 @@ func _ready():
 
 func _physics_process(delta):
 	$Frames.text = str(frame)
+	selfState = states.text
 
+#Tilt Attacks
+func FORWARD_TILT():
+	if frame == 14:
+		create_hitbox(28, 35, 8, 60, 3, 120, 5, 'normal', Vector2(70, 6), 0, 1)
+	if frame >= 24: #when exitable
+		return true
+
+func DOWN_TILT():
+	if frame == 14:
+		create_hitbox(35, 10, 8, 90, 3, 120, 5, 'normal', Vector2(61, 28), 0, 1)
+	if frame >= 27: #when exitable
+		return true
+
+func UP_TILT():
+	if frame == 16:
+		create_hitbox(43, 25, 8, 90, 3, 120, 5, 'normal', Vector2(13, -75), 0, 1)
+	if frame >= 32: #when exitable
+		return true
+
+func JAB():
+	if frame == 8:
+		create_hitbox(29, 29, 8, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+	if frame >= 16: #when exitable
+		return true

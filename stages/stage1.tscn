@@ -381,7 +381,7 @@ motion_scale = Vector2( 0.1, 0.1 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2( 0, -64 )
-scale = Vector2( 7.5, 7.5 )
+scale = Vector2( 6, 6 )
 texture = ExtResource( 6 )
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -389,7 +389,7 @@ motion_scale = Vector2( 0.2, 0.2 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer2"]
 position = Vector2( 0, -64 )
-scale = Vector2( 7.5, 7.5 )
+scale = Vector2( 6, 6 )
 texture = ExtResource( 7 )
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -397,7 +397,7 @@ motion_scale = Vector2( 0.3, 0.3 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer3"]
 position = Vector2( 0, -64 )
-scale = Vector2( 7.5, 7.5 )
+scale = Vector2( 6, 6 )
 texture = ExtResource( 3 )
 
 [node name="LevelArt" type="Node2D" parent="."]
