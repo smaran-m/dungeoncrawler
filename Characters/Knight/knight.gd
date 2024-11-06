@@ -131,9 +131,9 @@ func DOWN_TILT():
 	if frame >= 27: #when exitable
 		return true
 
-func UP_TILT():
+func UP_TILT(): # needs tweaking
 	if frame == 16:
-		create_hitbox(43, 25, 15, 90, 3, 120, 5, 'normal', Vector2(13, -75), 0, 1)
+		create_hitbox(56, 56, 15, 90, 3, 120, 5, 'normal', Vector2(13, -75), 0, 1)
 	if frame >= 32: #when exitable
 		return true
 
@@ -148,3 +148,68 @@ func JAB2():
 		create_hitbox(29, 29, 4, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
 	if frame >= 11: #when exitable
 		return true
+
+#Aerial Attacks
+# modelled after fox aerials
+func NAIR():
+	if frame == 1:
+		create_hitbox(56, 56, 12, 361, 0, 100, 3, 'normal', Vector2(0, 0), 0, 0.4)
+	if frame > 1:
+		if connected == true:
+			if frame == 36:
+				connected = false
+				return true
+		else:
+			if frame == 5:
+				create_hitbox(46, 56, 9, 361, 0, 100, 10, 'normal', Vector2(0, 0), 0, 0.1)
+			if frame == 36:
+				return true
+
+func UAIR():
+	if frame == 2:
+		create_hitbox(32, 36, 5, 90, 130, 0, 2, 'normal', Vector2(0, -45), 0, 1)
+	if frame == 6:
+		create_hitbox(56, 46, 10, 90, 20, 108, 3, 'normal', Vector2(0, -48), 0, 2)
+	if frame == 15:
+		return true
+
+func BAIR():
+	if frame == 2:
+		create_hitbox(52, 55, 15, 45, 1, 100, 5, 'normal', Vector2(-50, 0), 6, 1)
+	if frame > 1:
+		if connected == true:
+			if frame == 18:
+				connected = false
+				return true
+		else:
+			if frame == 7:
+				create_hitbox(52, 55, 5, 45, 3, 140, 10, 'normal', Vector2(-50, 0), 6, 1)
+			if frame == 18:
+				return true
+
+func FAIR():
+	if frame == 2:
+		create_hitbox(35, 47, 3, 76, 10, 150, 3, 'normal', Vector2(60, -7), 0, 1)
+	if frame == 11:
+		create_hitbox(35, 47, 3, 76, 10, 150, 3, 'normal', Vector2(60, -7), 0, 1)
+	if frame == 18:
+		return true
+
+func DAIR():
+	if frame == 2:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 3:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 5:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 7:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 9:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 11:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 14:
+		create_hitbox(36, 58, 2, 290, 140, 0, 2, 'normal', Vector2(28, 17), 0, 1)
+	if frame == 17:
+		return true
+

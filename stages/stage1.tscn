@@ -434,6 +434,7 @@ position = Vector2( 4, 335 )
 shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="floor"]
+visible = false
 margin_left = -21.0
 margin_top = 327.0
 margin_right = 19.0
@@ -448,6 +449,7 @@ position = Vector2( -955, -435 )
 polygon = PoolVector2Array( 479, 790, 1439, 790, 1384, 845, 1302, 883, 621, 886, 535, 845 )
 
 [node name="Label" type="Label" parent="wall"]
+visible = false
 margin_left = -20.0
 margin_top = 388.0
 margin_right = 20.0
@@ -455,10 +457,12 @@ margin_bottom = 402.0
 text = "wall"
 
 [node name="Ledge" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 484, 333 )
 ledge_Side = "Right"
 
 [node name="Ledge2" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( -476, 333 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
