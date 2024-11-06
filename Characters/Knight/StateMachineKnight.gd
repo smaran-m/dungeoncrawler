@@ -1,5 +1,7 @@
 extends StateMachine
 onready var id = parent.id
+const WALK_THRESHOLD = 0.2  # Start walking at 30% stick tilt
+const DASH_THRESHOLD = 0.5
 
 func _ready():
 	add_state('STAND')
@@ -88,22 +90,37 @@ func get_transition(delta):
 	match state:
 		states.STAND:
 			parent.reset_Jumps()
+			var right_strength = Input.get_action_strength("right_%s" % id)
+			var left_strength = Input.get_action_strength("left_%s" % id)
+
 			if Input.is_action_just_pressed("jump_%s" % id):
 				parent.frame()
 				return states.JUMP_SQUAT
 			if Input.is_action_just_pressed("down_%s" % id):
 				parent.frame()
 				return states.CROUCH
-			if Input.get_action_strength("right_%s" % id) == 1:
-				parent.velocity.x = parent.RUNSPEED
-				parent.frame()
-				parent.turn(false)
-				return states.DASH
-			if Input.get_action_strength("left_%s" % id) == 1:
-				parent.velocity.x = -parent.RUNSPEED
-				parent.frame()
-				parent.turn(true)
-				return states.DASH
+
+			# Check for walking vs dashing based on stick values
+			if right_strength >= WALK_THRESHOLD:
+				if right_strength >= DASH_THRESHOLD:
+					parent.velocity.x = parent.DASHSPEED
+					parent.frame()
+					parent.turn(false)
+					return states.DASH
+				else:
+					parent.frame()
+					return states.WALK
+			elif left_strength >= WALK_THRESHOLD:
+				if left_strength >= DASH_THRESHOLD:
+					parent.velocity.x = -parent.DASHSPEED
+					parent.frame()
+					parent.turn(true)
+					return states.DASH
+				else:
+					parent.frame()
+					return states.WALK
+					
+			# Handle friction when standing
 			if parent.velocity.x > 0 and state == states.STAND:
 				parent.velocity.x += -parent.TRACTION*1
 				parent.velocity.x = clamp(parent.velocity.x,0,parent.velocity.x)
@@ -730,6 +747,9 @@ func enter_state(new_state, old_state):
 		states.DASH:
 			parent.play_animation('dash')
 			parent.states.text = 'DASH'
+		states.WALK:
+			parent.play_animation('walk')
+			parent.states.text = 'WALK'
 		states.MOONWALK:
 			parent.play_animation('walk')
 			parent.states.text = 'MOONWALK'

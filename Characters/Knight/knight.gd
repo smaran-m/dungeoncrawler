@@ -91,7 +91,6 @@ func turn(direction):
 	Ledge_Grab_B.position.x = -dir * abs(Ledge_Grab_B.position.x)
 	Ledge_Grab_B.set_cast_to(Vector2(-dir*abs(Ledge_Grab_F.get_cast_to().x), Ledge_Grab_F.get_cast_to().y))
 	
-	
 func direction():
 	if Ledge_Grab_F.get_cast_to().x > 0:
 		return 1
