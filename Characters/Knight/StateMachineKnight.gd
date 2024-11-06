@@ -1,5 +1,5 @@
 extends StateMachine
-export(int) var id = 1
+onready var id = parent.id
 
 func _ready():
 	add_state('STAND')
@@ -19,6 +19,7 @@ func _ready():
 	add_state('LEDGE_CLIMB')
 	add_state('LEDGE_JUMP')
 	add_state('LEDGE_ROLL')
+	add_state('HITSTUN')
 	add_state('GROUND_ATTACK')
 	add_state('UP_TILT')
 	add_state('DOWN_TILT')
@@ -465,6 +466,33 @@ func get_transition(delta):
 				parent.frame()
 				return states.STAND
 
+		states.HITSTUN:
+			if parent.knockback >= 3: #hitstun threshhold
+				var bounce = parent.move_and_collide(parent.velocity * delta)
+				if bounce:
+					parent.velocity = parent.velocity.bounce(bounce.normal) * 0.8
+					parent.hitstun = round(parent.hitstun * 0.8)
+			if parent.velocity.y < 0:
+				parent.velocity.y += parent.vdecay * 0.5 * Engine.time_scale
+				parent.velocity.y = clamp(parent.velocity.y, parent.velocity.y, 0)
+			if parent.velocity.x < 0:
+				parent.velocity.x += parent.hdecay * -0.4 * Engine.time_scale
+				parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
+			elif parent.velocity.x > 0:
+				parent.velocity.x += parent.hdecay * -0.4 * Engine.time_scale
+				parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
+			
+			if parent.frame == parent.hitstun:
+				if parent.knockback >= 24:
+					parent.frame()
+					#return states.TUMBLE
+					return states.AIR
+				else:
+					parent.frame()
+					return states.AIR
+			elif parent.frame > 60 * 5:
+				return states.AIR
+
 		states.GROUND_ATTACK:
 			if Input.is_action_pressed("up_%s" % id):
 				parent.frame()
@@ -631,6 +659,9 @@ func enter_state(new_state, old_state):
 		states.LEDGE_ROLL:
 			parent.play_animation('dodge') # change to roll eventually
 			parent.states.text = 'LEDGE_ROLL'
+		states.HITSTUN:
+			parent.play_animation('hurt')
+			parent.states.text = 'HITSTUN'
 		states.GROUND_ATTACK:
 			parent.states.text = 'GROUND_ATTACK'
 		states.UP_TILT:

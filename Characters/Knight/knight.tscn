@@ -625,7 +625,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=85]
 length = 0.198
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -682,6 +681,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=87]
 length = 0.66
 loop = true
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -1385,6 +1385,7 @@ extents = Vector2( 22, 44 )
 extents = Vector2( 43, 25 )
 
 [node name="Knight" type="KinematicBody2D"]
+collision_mask = 6
 script = ExtResource( 6 )
 hitbox = ExtResource( 2 )
 
@@ -1396,7 +1397,7 @@ scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 15
-frame = 74
+frame = 70
 __meta__ = {
 "_aseprite_wizard_config_": {
 "layer": "",

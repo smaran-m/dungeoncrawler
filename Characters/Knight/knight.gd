@@ -2,6 +2,19 @@ extends KinematicBody2D
 
 #Global Variables
 var frame = 0
+export var id: int
+
+#Attributes
+export var percentage = 0
+export var stocks = 3
+export var weight = 100
+
+#Knockback
+var hdecay
+var vdecay
+var knockback
+var hitstun
+var connected:bool
 
 #Ground Variables
 var velocity = Vector2(0,0)
@@ -108,7 +121,7 @@ func _physics_process(delta):
 #Tilt Attacks
 func FORWARD_TILT():
 	if frame == 14:
-		create_hitbox(28, 35, 8, 60, 3, 120, 5, 'normal', Vector2(70, 6), 0, 1)
+		create_hitbox(28, 35, 11, 10, 3, 120, 5, 'normal', Vector2(70, 6), 0, 1)
 	if frame >= 24: #when exitable
 		return true
 
@@ -120,18 +133,18 @@ func DOWN_TILT():
 
 func UP_TILT():
 	if frame == 16:
-		create_hitbox(43, 25, 8, 90, 3, 120, 5, 'normal', Vector2(13, -75), 0, 1)
+		create_hitbox(43, 25, 15, 90, 3, 120, 5, 'normal', Vector2(13, -75), 0, 1)
 	if frame >= 32: #when exitable
 		return true
 
 func JAB():
 	if frame == 12:
-		create_hitbox(29, 29, 8, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+		create_hitbox(29, 29, 5, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
 	if frame >= 24: #when exitable
 		return true
 
 func JAB2():
 	if frame == 1:
-		create_hitbox(29, 29, 8, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+		create_hitbox(29, 29, 4, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
 	if frame >= 11: #when exitable
 		return true
