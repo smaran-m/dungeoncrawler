@@ -111,7 +111,7 @@ func reset_ledge():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass 
+	$ID.text = "P" + str(id)
 
 func _physics_process(delta):
 	$Frames.text = str(frame)
@@ -212,3 +212,8 @@ func DAIR():
 	if frame == 17:
 		return true
 
+func reset():
+	percentage = 0
+	#stocks -= 1
+	weight = 100
+	velocity = Vector2(0,0)
