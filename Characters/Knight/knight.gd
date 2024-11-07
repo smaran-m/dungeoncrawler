@@ -59,7 +59,7 @@ var DOUBLEJUMPFORCE = 1000
 var MAXAIRSPEED = 300
 var AIR_ACCEL = 25
 var FALLSPEED = 60
-var FALLINGSPEED = 900
+var FALLINGSPEED = 600
 var MAXFALLSPEED = 900
 var TRACTION = 40
 var ROLL_DISTANCE = 350
@@ -116,6 +116,7 @@ func _ready():
 func _physics_process(delta):
 	$Frames.text = str(frame)
 	selfState = states.text
+	$Percent.text = str(percentage) + "%"
 
 #Tilt Attacks
 func FORWARD_TILT():
@@ -138,13 +139,13 @@ func UP_TILT(): # needs tweaking
 
 func JAB():
 	if frame == 12:
-		create_hitbox(29, 29, 5, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+		create_hitbox(29, 29, 5, 10, 1, 120, 5, 'normal', Vector2(21, 8), 0, 1)
 	if frame >= 24: #when exitable
 		return true
 
 func JAB2():
 	if frame == 1:
-		create_hitbox(29, 29, 4, 90, 3, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+		create_hitbox(29, 29, 4, 10, 1, 120, 5, 'normal', Vector2(21, 8), 0, 1)
 	if frame >= 11: #when exitable
 		return true
 

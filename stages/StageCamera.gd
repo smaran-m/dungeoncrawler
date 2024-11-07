@@ -4,7 +4,7 @@ onready var p1 = get_parent().get_node("Knight")
 onready var p2 = get_parent().get_node("Knight2")
 
 # Define the minimum and maximum zoom levels
-const MIN_ZOOM = Vector2(0.3, 0.3)  # Adjust as needed
+const MIN_ZOOM = Vector2(0.4, 0.4)  # Adjust as needed
 const MAX_ZOOM = Vector2(1.0, 1.0)  # Adjust as needed
 const ZOOM_SCALING_FACTOR = 0.001  # Adjust to control how zoom changes with distance
 

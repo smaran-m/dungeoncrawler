@@ -1,6 +1,6 @@
 extends StateMachine
 onready var id = parent.id
-const WALK_THRESHOLD = 0.2  # Start walking at 30% stick tilt
+const WALK_THRESHOLD = 0.3 # Start walking at 30% stick tilt, maybe make this an export var for stick sens
 const DASH_THRESHOLD = 0.5
 
 func _ready():
@@ -21,6 +21,7 @@ func _ready():
 	add_state('LEDGE_CLIMB')
 	add_state('LEDGE_JUMP')
 	add_state('LEDGE_ROLL')
+	add_state('SHIELD')
 	add_state('HITSTUN')
 	add_state('GROUND_ATTACK')
 	add_state('UP_TILT')
@@ -57,6 +58,11 @@ func get_transition(delta):
 		return states.LEDGE_CATCH
 	else:
 		parent.reset_ledge()
+	
+	
+	if Input.is_action_just_pressed("shield_%s" % id) && TILT():
+		parent.frame()
+		return states.SHIELD
 	
 	if Input.is_action_just_pressed("attack_%s" % id) && TILT() == true:
 		parent.frame()
@@ -280,6 +286,7 @@ func get_transition(delta):
 							return states.STAND
 
 		states.WALK: # create transitions into this state
+			
 			if Input.is_action_just_pressed("jump_%s" % id):
 				parent.frame()
 				return states.JUMP_SQUAT
@@ -515,6 +522,31 @@ func get_transition(delta):
 				parent.frame()
 				return states.STAND
 
+		states.SHIELD:
+			if Input.is_action_just_pressed("jump_%s" % id):
+				parent.frame()
+				return states.JUMP_SQUAT
+			if Input.is_action_just_released("shield_%s" % id):
+				parent.frame()
+				return states.STAND
+			elif parent.velocity.x > 0:
+				if parent.velocity.x > parent.RUNSPEED:
+					parent.velocity.x += -(parent.TRACTION*4)
+					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
+				else:
+					parent.velocity.x += -(parent.TRACTION/2)
+					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
+			elif parent.velocity.x < 0:
+				if abs(parent.velocity.x) > parent.RUNSPEED:
+					parent.velocity.x += (parent.TRACTION*4)
+					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
+				else:
+					parent.velocity.x += (parent.TRACTION/2)
+					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
+			if parent.frame > 180: # 3 seconds
+				parent.frame()
+				return states.STAND
+
 		states.HITSTUN:
 			if parent.knockback >= 3: #hitstun threshhold
 				var bounce = parent.move_and_collide(parent.velocity * delta)
@@ -732,6 +764,9 @@ func get_transition(delta):
 					parent.velocity.x += parent.TRACTION * 3
 					parent.velocity.x = clamp(parent.velocity.x, parent.velocity.x, 0)
 			if parent.JAB2() == true:
+				if Input.is_action_pressed("attack_%s" % id):
+					parent.frame()
+					return states.JAB
 				if Input.is_action_pressed("down_%s" % id):
 					parent.frame()
 					return states.CROUCH
@@ -792,6 +827,9 @@ func enter_state(new_state, old_state):
 		states.LEDGE_ROLL:
 			parent.play_animation('dodge') # change to roll eventually
 			parent.states.text = 'LEDGE_ROLL'
+		states.SHIELD:
+			parent.play_animation('blocking')
+			parent.states.text = 'SHIELD'
 		states.HITSTUN:
 			parent.play_animation('hurt')
 			parent.states.text = 'HITSTUN'

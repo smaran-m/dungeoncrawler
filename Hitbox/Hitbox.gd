@@ -6,7 +6,7 @@ export var height = 400
 export var damage = 50
 export var angle = 90
 export var base_kb = 100 #knockback
-export var kb_scaling = 2
+export var kb_scaling = 3
 export var duration = 1500
 export var hitlag_modifier = 1 #both players enter hitlag state on some moves like falcon punch
 export var type = 'normal' #just relevant for effects
@@ -41,16 +41,20 @@ func Hitbox_Collide(body):
 		player_list.append(body)
 		var charstate
 		charstate = body.get_node("StateMachine")
-		weight = body.weight
-		body.percentage += damage
-		knockbackVal = knockback(body.percentage, damage, weight, kb_scaling, base_kb, 1)
-		s_angle(body)
-		angle_flipper(body)
-		body.knockback = knockbackVal
-		body.hitstun = getHitstun(knockbackVal/0.3)
-		get_parent().connected = true
-		body.frame()
-		charstate.state = charstate.states.HITSTUN
+		if charstate.state != charstate.states.SHIELD:
+			weight = body.weight
+			body.percentage += damage
+			knockbackVal = knockback(body.percentage, damage, weight, kb_scaling, base_kb, 1)
+			s_angle(body)
+			angle_flipper(body)
+			body.knockback = knockbackVal
+			body.hitstun = getHitstun(knockbackVal/0.3)
+			get_parent().connected = true
+			body.frame()
+			charstate.state = charstate.states.HITSTUN
+		else:
+			body.play_animation('hit')
+			#charstate.state = charstate.states.SHIELD
 
 
 func update_extents():
@@ -88,7 +92,7 @@ func knockback(p, d, w, ks, bk, r):
 	kb_scaling = ks
 	base_kb = bk
 	ratio = r
-	return ((((((((percentage/10) + (percentage * damage/20)) * (200/(weight + 100)) * 1.4) + 18) * kb_scaling) + base_kb) * 1)) * ratio * 0.004 # scaling for appropriate units
+	return ((((((((percentage/10) + (percentage * damage/20)) * (200/(weight + 100)) * 1.4) + 18) * kb_scaling) + base_kb) * 1)) * ratio * 0.002 # scaling for appropriate units
 
 func s_angle(body): #sakurai angles
 	if angle == 361:
