@@ -556,7 +556,7 @@ func get_transition(delta):
 				parent.velocity.x = kbx
 				parent.velocity.y = kby
 				parent.hdecay = hd
-				parent.vdecay = hd
+				parent.vdecay = vd
 				return states.HITSTUN
 			parent.position = pos #same position while in freezeframes
 
