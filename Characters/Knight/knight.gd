@@ -8,6 +8,7 @@ export var id: int
 export var percentage = 0
 export var stocks = 3
 export var weight = 100
+var freezeframes = 0
 
 #Knockback
 var hdecay
@@ -21,9 +22,9 @@ var velocity = Vector2(0,0)
 var dash_duration = 8
 
 #Landing Variables
-var landing_frames = 10
-var lag_frames = 6
-var jump_squat = 6
+var landing_frames = 0
+var lag_frames = 0
+var jump_squat = 4
 var perfect_wavedash_modifier = 1
 
 #Air Variables
@@ -39,6 +40,12 @@ var catch = false
 #Hitboxes
 export var hitbox: PackedScene
 var selfState
+
+#Temp variables for hitstun
+var hit_pause = 0
+var hit_pause_dur = 0
+var temp_pos = Vector2(0, 0)
+var temp_vel = Vector2(0, 0)
 
 #Onready variables
 onready var GroundL = get_node("Raycasts/GroundL")
@@ -77,7 +84,10 @@ func create_hitbox(width, height, damage, angle, base_kb, kb_scaling, duration, 
 	return hitbox_instance
 
 func updateframes(delta):
-	frame += 1
+	frame += floor(delta * 60)
+	if freezeframes > 0:
+		freezeframes -= floor(delta * 60)
+	freezeframes = clamp(freezeframes, 0, freezeframes)
 
 func turn(direction):
 	var dir = 0
@@ -118,8 +128,21 @@ func _physics_process(delta):
 	selfState = states.text
 	$Percent.text = str(percentage) + "%"
 
+func hit_pause(delta):
+	if hit_pause < hit_pause_dur:
+		self.position = temp_pos
+		hit_pause += floor(delta * 60)
+	else:
+		if temp_vel != Vector2(0, 0):
+			self.velocity.x = temp_vel.x
+			self.velocity.y = temp_vel.y
+			temp_vel = Vector2(0, 0)
+		hit_pause = 0
+		hit_pause_dur = 0
+
 #Tilt Attacks
 func FORWARD_TILT():
+	print("ftilt")
 	if frame == 14:
 		create_hitbox(28, 35, 11, 10, 3, 120, 5, 'normal', Vector2(70, 6), 0, 1)
 	if frame >= 24: #when exitable
@@ -139,7 +162,7 @@ func UP_TILT(): # needs tweaking
 
 func JAB():
 	if frame == 12:
-		create_hitbox(29, 29, 5, 10, 1, 120, 5, 'normal', Vector2(21, 8), 0, 1)
+		create_hitbox(22, 39, 5, 10, 1, 120, 5, 'normal', Vector2(20, -24), 0, 1)
 	if frame >= 24: #when exitable
 		return true
 

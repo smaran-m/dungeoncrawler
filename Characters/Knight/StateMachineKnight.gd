@@ -22,6 +22,7 @@ func _ready():
 	add_state('LEDGE_JUMP')
 	add_state('LEDGE_ROLL')
 	add_state('SHIELD')
+	add_state('HITFREEZE')
 	add_state('HITSTUN')
 	add_state('GROUND_ATTACK')
 	add_state('UP_TILT')
@@ -42,6 +43,7 @@ func state_logic(delta):
 	parent._physics_process(delta)
 	if parent.regrab > 0:
 		parent.regrab -= 1
+	parent.hit_pause(delta)
 
 func get_transition(delta):
 	parent.move_and_slide_with_snap(parent.velocity*2,Vector2.ZERO,Vector2.UP)
@@ -341,8 +343,8 @@ func get_transition(delta):
 
 		states.LANDING:
 			if parent.frame <= parent.landing_frames + parent.lag_frames:
-				if parent.frame == 1:
-					pass
+				#if parent.frame == 1:
+				#	pass
 				if parent.velocity.x > 0:
 					parent.velocity.x = parent.velocity.x - parent.TRACTION/2
 					parent.velocity.x = clamp(parent.velocity.x, 0, parent.velocity.x)
@@ -427,15 +429,16 @@ func get_transition(delta):
 			if parent.frame == 1:
 				pass
 			if parent.frame == 5:
-				parent.position.y += -25
+				parent.position.y += -20
 			if parent.frame == 10:
-				parent.position.y += -25
-			if parent.frame == 20:
-				parent.position.y += -25
+				parent.position.y += -20
+			if parent.frame == 15:
+				parent.position.y += -40
+				parent.position.x += 25 * parent.direction()
 			if parent.frame == 22:
 				parent.position.y += -25
 				parent.catch = false
-				parent.position.x += 50 * parent.direction()
+				parent.position.x += 25 * parent.direction()
 			if parent.frame == 25:
 				parent.velocity.y = 0
 				parent.velocity.x = 0
@@ -547,6 +550,16 @@ func get_transition(delta):
 				parent.frame()
 				return states.STAND
 
+		states.HITFREEZE:
+			if parent.freezeframes == 0:
+				parent.frame()
+				parent.velocity.x = kbx
+				parent.velocity.y = kby
+				parent.hdecay = hd
+				parent.vdecay = hd
+				return states.HITSTUN
+			parent.position = pos #same position while in freezeframes
+
 		states.HITSTUN:
 			if parent.knockback >= 3: #hitstun threshhold
 				var bounce = parent.move_and_collide(parent.velocity * delta)
@@ -608,7 +621,12 @@ func get_transition(delta):
 				parent.lag_frames = 0
 				parent.frame()
 				return states.AIR
-
+			### if we wanted to add l-cancelling/autocancels, do smth like this
+			#elif parent.frame < 5 or parent.frame > 15:
+			#	parent.lag_frames = 0
+			#else:
+			#	parent.lag_frames = 7
+				
 		states.UAIR:
 			AIRMOVEMENT()
 			if parent.frame == 0:
@@ -830,6 +848,9 @@ func enter_state(new_state, old_state):
 		states.SHIELD:
 			parent.play_animation('blocking')
 			parent.states.text = 'SHIELD'
+		states.HITFREEZE:
+			parent.play_animation('hurt')
+			parent.states.text = 'HITFREEZE'
 		states.HITSTUN:
 			parent.play_animation('hurt')
 			parent.states.text = 'HITSTUN'
@@ -867,7 +888,6 @@ func enter_state(new_state, old_state):
 		states.JAB2:
 			parent.play_animation('jab2')
 			parent.states.text = 'JAB2'
-
 
 func exit_state(old_state, new_state):
 	pass
@@ -1015,3 +1035,17 @@ func Ledge():
 				collider.is_grabbed = true
 				parent.last_ledge = collider
 				return true
+
+var kbx
+var kby
+var hd
+var vd
+var pos
+
+func hitfreeze(duration, knockback):
+	pos = parent.get_position()
+	parent.freezeframes = duration
+	kbx = knockback[0]
+	kby = knockback[1]
+	hd = knockback[2]
+	vd = knockback[3]

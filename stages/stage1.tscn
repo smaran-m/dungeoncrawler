@@ -479,7 +479,7 @@ shape = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-limit_left = -1140
+limit_left = -1150
 limit_top = -710
 limit_right = 1150
 limit_bottom = 550

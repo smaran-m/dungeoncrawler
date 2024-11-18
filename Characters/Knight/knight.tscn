@@ -487,6 +487,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=80]
 length = 0.32
 loop = true
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -506,7 +507,7 @@ tracks/1/loop_wrap = false
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.08, 0.16, 0.24 ),
+"times": PoolRealArray( 0, 0.0833333, 0.166667, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 208.0, 209.0, 210.0, 211.0 ]
@@ -626,7 +627,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=85]
 length = 0.198
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -879,7 +879,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=107]
 length = 0.264
-loop = true
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:visible")
 tracks/0/interp = 1
@@ -1396,7 +1396,7 @@ outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
 [sub_resource type="RectangleShape2D" id=113]
-extents = Vector2( 43, 25 )
+extents = Vector2( 22, 38.5 )
 
 [node name="Knight" type="KinematicBody2D"]
 collision_mask = 6
@@ -1411,7 +1411,7 @@ scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 16
 vframes = 15
-frame = 59
+frame = 194
 __meta__ = {
 "_aseprite_wizard_config_": {
 "layer": "",
@@ -1419,7 +1419,7 @@ __meta__ = {
 "o_folder": "",
 "o_name": "",
 "only_visible": false,
-"op_exp": false,
+"op_exp": true,
 "player": "Sprite/AnimationPlayer",
 "slice": "",
 "source": "res://Characters/Knight/sprites/knight-master.aseprite"
@@ -1547,7 +1547,6 @@ text = "Test"
 align = 1
 
 [node name="HitboxPreview" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 13, -75 )
+position = Vector2( 20, -24 )
 shape = SubResource( 113 )
 disabled = true
