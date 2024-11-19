@@ -4,13 +4,13 @@ onready var p1 = get_parent().get_node("Knight")
 onready var p2 = get_parent().get_node("Knight2")
 
 # Define the minimum and maximum zoom levels
-const MIN_ZOOM = Vector2(0.4, 0.4)  # Adjust as needed
+const MIN_ZOOM = Vector2(0.3, 0.3)  # Adjust as needed
 const MAX_ZOOM = Vector2(1.0, 1.0)  # Adjust as needed
 const ZOOM_SCALING_FACTOR = 0.001  # Adjust to control how zoom changes with distance
 
 # Define the speed of interpolation for position and zoom
 const POSITION_LERP_SPEED = 0.5  # Higher value makes it follow faster
-const ZOOM_LERP_SPEED = 0.3      # Higher value makes it zoom faster
+const ZOOM_LERP_SPEED = 0.5      # Higher value makes it zoom faster
 
 func _physics_process(delta):
 	# Target position: midpoint between the two players

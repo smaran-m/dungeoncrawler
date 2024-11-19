@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/knight-master.png-6e5c530b545f899fc477e40bbbfe4ad7.stex"
+path="res://.import/knight-master.png-f72beff09a385bf9aec931f1a09e13e9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Characters/Knight/knight-master.png"
-dest_files=[ "res://.import/knight-master.png-6e5c530b545f899fc477e40bbbfe4ad7.stex" ]
+source_file="res://Characters/Knight/sprites/skins/knight-master.png"
+dest_files=[ "res://.import/knight-master.png-f72beff09a385bf9aec931f1a09e13e9.stex" ]
 
 [params]
 

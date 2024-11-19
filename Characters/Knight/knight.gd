@@ -142,7 +142,6 @@ func hit_pause(delta):
 
 #Tilt Attacks
 func FORWARD_TILT():
-	print("ftilt")
 	if frame == 14:
 		create_hitbox(28, 35, 11, 10, 3, 120, 5, 'normal', Vector2(70, 6), 0, 1)
 	if frame >= 24: #when exitable

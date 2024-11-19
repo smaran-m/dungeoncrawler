@@ -376,14 +376,14 @@ func get_transition(delta):
 
 		states.LEDGE_HOLD:
 			if parent.frame >= 390:
-				self.parent.position.y += -25
+				self.parent.position.y += -25 #maybe add to pos.x also
 				parent.frame()
 				return states.AIR #return states.TUMBLE
 			if Input.is_action_just_pressed("down_%s" % id):
 				parent.fastfall = true
 				parent.regrab = 30
 				parent.reset_ledge()
-				self.parent.position.y += -25
+				self.parent.position.y += -25 #maybe add to pos.x also
 				parent.catch = false
 				parent.frame()
 				return states.AIR
@@ -392,7 +392,7 @@ func get_transition(delta):
 					parent.velocity.x = (parent.AIR_ACCEL/2)
 					parent.regrab = 30
 					parent.reset_ledge()
-					self.parent.position.y += -25
+					self.parent.position.y += -25 #maybe add to pos.x also
 					parent.catch = false
 					parent.frame()
 					return states.AIR
@@ -427,7 +427,7 @@ func get_transition(delta):
 
 		states.LEDGE_CLIMB:
 			if parent.frame == 1:
-				pass
+				parent.position.y += -10
 			if parent.frame == 5:
 				parent.position.y += -20
 			if parent.frame == 10:
@@ -961,7 +961,9 @@ func Landing():
 			return true
 
 func Falling():
-	if state_includes([states.STAND, states.DASH, states.MOONWALK, states.RUN, states.CROUCH, states.WALK, states.LANDING]):
+	var movement_states = [states.STAND, states.DASH, states.MOONWALK, states.RUN, states.CROUCH, states.WALK, states.LANDING]
+	var attack_states = [states.GROUND_ATTACK, states.UP_TILT, states.DOWN_TILT, states.FORWARD_TILT, states.JAB, states.JAB2]
+	if state_includes(movement_states + attack_states):
 		if not parent.GroundL.is_colliding() and not parent.GroundR.is_colliding():
 			return true
 
